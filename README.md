@@ -1,0 +1,1 @@
+# External-Secrets-in-RHOAI

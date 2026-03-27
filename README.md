@@ -66,6 +66,37 @@ Add the secret to your **Notebook CR** under envFrom to inject all keys as envir
 access_key = os.environ["AWS_ACCESS_KEY_ID"
 ```
 
+Mapping Specific Keys to Custom Environment Variable Names
+
+If you only need certain keys, or want to rename them, use `env.valueFrom.secretKeyRef`
+instead of `envFrom`:
+(This is useful when the secret's key names don't match what your code expects, or when you only need a subset of the keys.)
+
+```yaml
+spec:
+  template:
+    spec:
+      containers:
+        - name: my-workbench
+          env:
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: password
+            - name: PGHOST
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: host
+
+
+
+Python Usage:
+import os
+pg_host = os.environ["PGHOST"]
+pg_pass = os.environ["PGPASSWORD"]
+
 
 ## **Data Science Pipelines (KFP v2)**
 
